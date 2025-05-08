@@ -27,6 +27,16 @@
     { "id": "html", "extensions": [".html"] },
     { "id": "javascriptreact", "extensions": [".jsx"] },
     { "id": "typescriptreact", "extensions": [".tsx"] }
+  ],
+  "keybindings": [
+    {
+      "command": "a11y-codelens.checkAccessibility",
+      "key": "cmd+shift+a",
+      "mac": "cmd+shift+a",
+      "linux": "ctrl+shift+a",
+      "win": "ctrl+shift+a",
+      "when": "editorTextFocus"
+    }
   ]
 },
 
