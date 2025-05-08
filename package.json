@@ -3,9 +3,15 @@
   "displayName": "a11y-codelens",
   "description": "Verificar acessibilidade em tempo de desenvolvimento",
   "version": "0.0.1",
+  "publisher": "edvaldoafonso",
   "engines": {
     "vscode": "^1.99.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eadafonso/a11y-codelens.git"
+  },
+  "icon": "icon/acessibilidade.png",
   "categories": [
     "Other"
   ],
