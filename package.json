@@ -9,18 +9,36 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onStartupFinished",
+    "onLanguage:html",
+    "onLanguage:javascriptreact",
+    "onLanguage:typescriptreact"
+  ],
   "main": "./dist/extension.js",
-  "contributes": {
-    "commands": [
-      
-        {
-          "command": "a11y-codelens.checkAccessibility",
-          "title": "Verificar Acessibilidade (a11y)"
-        }
-      
-    ]
-  },
+"contributes": {
+  "commands": [
+    {
+      "command": "a11y-codelens.checkAccessibility",
+      "title": "🔍 Verificar Acessibilidade"
+    }
+  ],
+  "languages": [
+    { "id": "html", "extensions": [".html"] },
+    { "id": "javascriptreact", "extensions": [".jsx"] },
+    { "id": "typescriptreact", "extensions": [".tsx"] }
+  ]
+},
+
+"menus": {
+  "editor/title": [
+    {
+      "command": "a11y-codelens.checkAccessibility",
+      "when": "resourceLangId == html || resourceLangId == javascriptreact || resourceLangId == typescriptreact",
+      "group": "navigation"
+    }
+  ]
+},
   "scripts": {
     "vscode:prepublish": "npm run package",
     "compile": "npm run check-types && npm run lint && node esbuild.js",

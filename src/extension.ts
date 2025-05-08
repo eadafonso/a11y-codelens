@@ -1,51 +1,55 @@
 import * as vscode from "vscode";
+import { runAllChecks } from "./checks";
+
+// Crie o DiagnosticCollection fora do comando
+const diagnosticCollection =
+  vscode.languages.createDiagnosticCollection("a11y");
 
 export function activate(context: vscode.ExtensionContext) {
-  const diagnosticCollection =
-    vscode.languages.createDiagnosticCollection("a11y");
+  console.log('Extensão "a11y-codelens" ativa!');
 
-  const runAccessibilityCheck = () => {
-    const editor = vscode.window.activeTextEditor;
-    if (!editor) {
-      return;
-    }
-
-    const text = editor.document.getText();
-    const diagnostics: vscode.Diagnostic[] = [];
-
-    const imgRegex = /<img\s+([^>]*?)>/g;
-    let match;
-    while ((match = imgRegex.exec(text)) !== null) {
-      const imgTag = match[0];
-      const hasAlt = /alt\s*=/.test(imgTag);
-
-      if (!hasAlt) {
-        const startPos = editor.document.positionAt(match.index);
-        const endPos = editor.document.positionAt(match.index + imgTag.length);
-        const range = new vscode.Range(startPos, endPos);
-
-        const diagnostic = new vscode.Diagnostic(
-          range,
-          "Acessibilidade: a tag <img> está sem o atributo alt.",
-          vscode.DiagnosticSeverity.Warning
-        );
-
-        diagnostics.push(diagnostic);
-      }
-    }
-
-    diagnosticCollection.set(editor.document.uri, diagnostics);
-    vscode.window.showInformationMessage(
-      "Verificação de acessibilidade concluída!"
-    );
-  };
-
+  // Comando principal: Verificar Acessibilidade
   const disposable = vscode.commands.registerCommand(
     "a11y-codelens.checkAccessibility",
-    runAccessibilityCheck
+    () => {
+      const editor = vscode.window.activeTextEditor;
+
+      if (!editor) {
+        vscode.window.showInformationMessage("Nenhum editor ativo.");
+        return;
+      }
+
+      const document = editor.document;
+      const text = document.getText();
+
+      const diagnostics = runAllChecks(text, document);
+
+      // Atualiza os diagnósticos do documento atual
+      diagnosticCollection.set(document.uri, diagnostics);
+
+      vscode.window.showInformationMessage(
+        "Verificação de acessibilidade concluída."
+      );
+    }
   );
 
+  // Botão na status bar (canto inferior direito)
+  const statusBarItem = vscode.window.createStatusBarItem(
+    vscode.StatusBarAlignment.Right,
+    1
+  );
+  statusBarItem.command = "a11y-codelens.checkAccessibility";
+  statusBarItem.text = "Verificar A11y";
+  statusBarItem.tooltip = "Executar verificação de acessibilidade";
+  statusBarItem.show();
+
+  // Registrar no contexto
   context.subscriptions.push(disposable);
+  context.subscriptions.push(statusBarItem);
+  context.subscriptions.push(diagnosticCollection);
 }
 
-export function deactivate() {}
+export function deactivate() {
+  diagnosticCollection.clear();
+  diagnosticCollection.dispose();
+}
