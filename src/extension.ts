@@ -33,6 +33,25 @@ export function activate(context: vscode.ExtensionContext) {
     }
   );
 
+  // Atualiza os diagnósticos automaticamente quando o documento muda
+  const changeListener = vscode.workspace.onDidChangeTextDocument((event) => {
+    const document = event.document;
+
+    // Verifica apenas arquivos de HTML, JSX, TSX
+    if (
+      !["html", "javascriptreact", "typescriptreact"].includes(
+        document.languageId
+      )
+    ) {
+      return;
+    }
+
+    const text = document.getText();
+    const diagnostics = runAllChecks(text, document);
+
+    diagnosticCollection.set(document.uri, diagnostics);
+  });
+
   // Botão na status bar (canto inferior direito)
   const statusBarItem = vscode.window.createStatusBarItem(
     vscode.StatusBarAlignment.Right,
@@ -46,6 +65,7 @@ export function activate(context: vscode.ExtensionContext) {
   // Registrar no contexto
   context.subscriptions.push(disposable);
   context.subscriptions.push(statusBarItem);
+  context.subscriptions.push(changeListener);
   context.subscriptions.push(diagnosticCollection);
 }
 

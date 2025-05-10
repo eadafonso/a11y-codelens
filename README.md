@@ -18,10 +18,10 @@
 
 ## 💡 Como usar
 
-1. Instale a extensão localmente ou via marketplace (em breve).
-2. Abra um arquivo `.html` ou `.jsx`.
+1. Instale a extensão via [Marketplace do VSCode](https://marketplace.visualstudio.com/items?itemName=edvaldoafonso.a11y-codelens) ou localmente.
+2. Abra um arquivo `.html`, `.jsx` ou `.tsx`.
 3. Clique no botão `Verificar A11y` na barra de status **ou use o atalho `Cmd+Shift+A` (Mac) / `Ctrl+Shift+A` (Windows/Linux)`**.
-4. Veja os avisos no editor com sugestões para correção.
+4. Veja os avisos diretamente no editor com sugestões para correção.
 
 ---
 
@@ -40,3 +40,7 @@
   </button>
 </button>
 ```
+
+🧩 Requisitos
+
+- VSCode versão 1.70.0 ou superior
