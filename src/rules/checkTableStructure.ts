@@ -15,7 +15,7 @@ export function checkTableStructure(
     const tableEndIndex = text.indexOf("</table>", index);
     if (tableEndIndex === -1) {
       continue;
-    } // ignora se não encontrar fim da tabela
+    }
 
     const tableEnd = document.positionAt(tableEndIndex + "</table>".length);
     const range = new vscode.Range(tableStart, tableEnd);
